@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- =========================================================
+       Matériaux
+       ========================================================= -->
+  <gazebo reference="base_link">
+    <material><diffuse>0.5 0.5 0.5 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="floor1_link">
+    <material><diffuse>0.5 0.5 0.5 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="floor2_link">
+    <material><diffuse>0.5 0.5 0.5 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="right_wheel_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="left_wheel_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="caster_wheel_link">
+    <material>
+      <diffuse>0.1 0.1 0.1 1</diffuse>
+    </material>
+    <mu1 value="0.1" />
+    <mu2 value="0.1" />
+  </gazebo>
+  <gazebo reference="right_wheel_1_standoff_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="left_wheel_1_standoff_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="caster_wheel_1_standoff_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="right_wheel_2_standoff_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="left_wheel_2_standoff_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+  <gazebo reference="caster_wheel_2_standoff_link">
+    <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+  </gazebo>
+
+  <!-- =========================================================
+       Plugins
+       ========================================================= -->
+  <gazebo>
+
+    <!-- Diff Drive -->
+    <plugin filename="gz-sim-diff-drive-system"
+            name="gz::sim::systems::DiffDrive">
+      <left_joint>base_to_left_wheel</left_joint>
+      <right_joint>base_to_right_wheel</right_joint>
+      <wheel_separation>0.2</wheel_separation>
+      <wheel_radius>0.033</wheel_radius>
+      <odom_publish_frequency>50.0</odom_publish_frequency>
+      <topic>cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <!-- ✅ Topic dédié pour odom → base_footprint -->
+      <tf_topic>odom_tf</tf_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_footprint</child_frame_id>
+    </plugin>
+
+    <!-- Joint States -->
+    <plugin filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+      <joint_name>base_to_left_wheel</joint_name>
+      <joint_name>base_to_right_wheel</joint_name>
+    </plugin>
+
+  </gazebo>
+
+</robot>

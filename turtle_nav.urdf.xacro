@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot name="turtle_nav" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+        <xacro:include filename="common_prop.xacro" />
+        <xacro:include filename="turtle_base.xacro" />
+        <xacro:include filename="turtle_base_gazebo.xacro" />
+        <!--<xacro:include filename="ros2_control.xacro" /> -->
+        <xacro:include filename="sensors.xacro" />
+        <xacro:include filename="sensors_gazebo.xacro"/>
+
+        <joint name="lidar_joint" type="fixed">
+                <parent link="base_link"/>
+                <child link="lidar_link"/>
+                <origin xyz="0 0 ${(lidar_length + base_height)/2 + 0.115}" rpy="0 0 0"/>
+        </joint>
+
+
+
+</robot>
+     
