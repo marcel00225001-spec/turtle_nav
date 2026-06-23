@@ -1,0 +1,63 @@
+# =============================================================================
+#  ros_gz_bridge.yaml
+#  Bridge ROS2 Jazzy <-> Gazebo Harmonic
+#  Robot : turtle_nav (diff_drive + LiDAR)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# [1] CLOCK — Mandatory for use_sim_time
+# -----------------------------------------------------------------------------
+- ros_topic_name: /clock
+  gz_topic_name: /clock
+  ros_type_name: rosgraph_msgs/msg/Clock
+  gz_type_name: gz.msgs.Clock
+  direction: GZ_TO_ROS
+
+# -----------------------------------------------------------------------------
+# [2] DIFF DRIVE & TRANSFORMS
+# -----------------------------------------------------------------------------
+
+# Velocity Commands (Teleop / Nav2 -> Gazebo)
+- ros_topic_name: /cmd_vel
+  gz_topic_name: /cmd_vel
+  ros_type_name: geometry_msgs/msg/Twist
+  gz_type_name: gz.msgs.Twist
+  direction: ROS_TO_GZ
+
+# Odometry Data (Gazebo -> ROS)
+- ros_topic_name: /odom
+  gz_topic_name: /odom
+  ros_type_name: nav_msgs/msg/Odometry
+  gz_type_name: gz.msgs.Odometry
+  direction: GZ_TO_ROS
+
+# Dynamic TF (odom -> base_footprint)
+# ✅ Uniquement la TF dynamique depuis odom_tf de Gazebo
+- ros_topic_name: /tf
+  gz_topic_name: /odom_tf
+  ros_type_name: tf2_msgs/msg/TFMessage
+  gz_type_name: gz.msgs.Pose_V
+  direction: GZ_TO_ROS
+
+# ❌ SUPPRIMÉ : /tf_static bridgé depuis Gazebo
+# Gazebo n'a pas de TF statiques à publier — c'est le rôle exclusif
+# du robot_state_publisher. Le bridge écrasait ses messages (TRANSIENT_LOCAL).
+
+# -----------------------------------------------------------------------------
+# [3] JOINT STATES — Wheel positions for robot_state_publisher
+# -----------------------------------------------------------------------------
+- ros_topic_name: /joint_states
+  gz_topic_name: /joint_states
+  ros_type_name: sensor_msgs/msg/JointState
+  gz_type_name: gz.msgs.Model
+  direction: GZ_TO_ROS
+
+# -----------------------------------------------------------------------------
+# [4] LIDAR SCAN
+# -----------------------------------------------------------------------------
+- ros_topic_name: /scan
+  gz_topic_name: /scan
+  ros_type_name: sensor_msgs/msg/LaserScan
+  gz_type_name: gz.msgs.LaserScan
+  direction: GZ_TO_ROS
+  lazy: false
